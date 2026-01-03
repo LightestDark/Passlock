@@ -12,6 +12,10 @@ Still working on it up to the 14 hour Quota so stay tuned for updates in the Cha
 
 1.02 - Got rid of PMG pictures, stuck to emojis so there's less faff in what you need to download, added a section to store passwords internally.
 
+1.03 - Encypted passwords saved on local files, so unless you have the key you cannot access the true passwords
+
+1.04-  Added a scroll sidebar for if you have several passwords
+
 
 
 # Photos
