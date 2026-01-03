@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PassLock</title>
+<style>
+body { font-family: Arial; background: #6c5ce7; margin: 0; padding: 20px; }
+.wrapper { max-width: 1100px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
+h1 { text-align: center; color: #333; margin-bottom: 5px; }
+.tagline { text-align: center; color: #666; font-size: 14px; margin-bottom: 20px; }
+.main { display: flex; gap: 20px; }
+.left, .right { flex: 1; }
+.box { background: #f9f9f9; border: 1px solid #ddd; padding: 20px; border-radius: 8px; margin-bottom: 15px; }
+h2 { color: #444; margin-bottom: 15px; border-bottom: 2px solid #6c5ce7; padding-bottom: 8px; }
+.form-group { margin-bottom: 15px; }
+label { display: block; margin-bottom: 5px; font-weight: bold; }
+input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+.pass-wrap { position: relative; }
+.eye-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; }
+.strength { height: 5px; background: #eee; margin-top: 5px; border-radius: 3px; }
+.strength-bar { height: 100%; width: 0; background: red; border-radius: 3px; }
+.buttons { display: flex; gap: 10px; margin-top: 20px; }
+button { padding: 12px; background: #6c5ce7; color: white; border: none; border-radius: 5px; cursor: pointer; flex: 1; }
+button:hover { background: #5b4bd4; }
+.gen-btn { background: #a29bfe; }
+.gen-btn:hover { background: #8a7efe; }
+.pass-list { max-height: 400px; overflow-y: auto; padding: 10px; background: white; border: 1px solid #ddd; border-radius: 5px; }
+.pass-item { background: #f9f9f9; border: 1px solid #eee; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+.item-top { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.item-name { font-weight: bold; }
+.item-cat { background: #e0e7ff; padding: 3px 10px; border-radius: 12px; font-size: 12px; color: #6c5ce7; }
+.item-user { color: #666; margin-bottom: 10px; font-size: 14px; }
+.item-pass { background: white; padding: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; border-radius: 5px; border: 1px solid #ddd; }
+.pass-dots { font-family: monospace; }
+.item-actions { display: flex; gap: 8px; }
+.act-btn { padding: 6px 12px; background: white; border: 1px solid #ddd; cursor: pointer; font-size: 13px; flex: 1; border-radius: 4px; }
+.show-btn { color: #6c5ce7; }
+.copy-btn { color: #00b894; }
+.del-btn { color: #e17055; }
+.empty { text-align: center; padding: 30px; color: #888; }
+.count { background: #6c5ce7; color: white; padding: 3px 10px; border-radius: 12px; font-size: 13px; }
+.msg { position: fixed; top: 20px; right: 20px; background: #00b894; color: white; padding: 12px 20px; display: none; z-index: 1000; border-radius: 5px; }
+.msg.error { background: #e17055; }
+.setup-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; }
+.setup-box { background: white; padding: 25px; border-radius: 10px; width: 320px; }
+.setup-box h3 { margin-top: 0; }
+footer { text-align: center; margin-top: 20px; color: #666; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+    <h1>🔐 PassLock</h1>
+    <div class="tagline">Store your passwords safely</div>
+    
+    <div class="main">
+        <div class="left">
+            <div class="box">
+                <h2>Add Password</h2>
+                <div class="form-group">
+                    <label>Website</label>
+                    <input type="text" id="website" placeholder="google.com">
+                </div>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="username" placeholder="user@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="pass-wrap">
+                        <input type="password" id="password" placeholder="your password">
+                        <button class="eye-btn" id="eyeBtn">👁</button>
+                    </div>
+                    <div class="strength">
+                        <div class="strength-bar" id="strengthBar"></div>
+                    </div>
+                    <div style="font-size:13px;" id="strengthText">Strength: None</div>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="category">
+                        <option>Social</option><option>Email</option><option>Bank</option><option>Work</option>
+                    </select>
+                </div>
+                <div class="buttons">
+                    <button id="saveBtn">💾 Save</button>
+                    <button class="gen-btn" id="genBtn">🎲 Generate</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right">
+            <div class="box">
+                <h2 style="display:inline;">Saved</h2> <span class="count" id="count">0</span>
+                <div class="pass-list" id="passList">
+                    <div class="empty">No passwords yet</div>
+                </div>
+            </div>
+            <button onclick="showForgot()" style="width:100%; margin-top:10px; background:#e17055;">Forgot Master Password?</button>
+        </div>
+    </div>
+    
+    <footer>Passwords encrypted in your browser</footer>
+</div>
+
+<div class="msg" id="msg">Message</div>
+
+<div class="setup-screen" id="masterPrompt">
+    <div class="setup-box">
+        <h3>Enter Master Password</h3>
+        <p style="font-size:14px; color:#666;">Enter your master password</p>
+        <input type="password" id="masterInput" placeholder="master password" style="width:100%; padding:10px; margin:15px 0;">
+        <button onclick="checkMaster()" style="width:100%;">Unlock</button>
+        <button onclick="showForgot()" style="width:100%; margin-top:10px; background:#ccc;">Forgot?</button>
+    </div>
+</div>
+
+<div class="setup-screen" id="forgotScreen">
+    <div class="setup-box">
+        <h3>Reset Master Password</h3>
+        <p style="color:red; font-size:13px;">⚠️ This deletes ALL passwords!</p>
+        <input type="password" id="newMasterForgot" placeholder="new password" style="width:100%; padding:10px; margin:10px 0;">
+        <input type="password" id="confirmMasterForgot" placeholder="confirm" style="width:100%; padding:10px; margin-bottom:15px;">
+        <button onclick="resetMaster()" style="width:100%; background:#e17055;">Reset & Delete All</button>
+        <button onclick="closeForgot()" style="width:100%; margin-top:10px; background:#ccc;">Cancel</button>
+    </div>
+</div>
+
+<script>
+// Elements
+const website = document.getElementById('website');
+const username = document.getElementById('username');
+const password = document.getElementById('password');
+const category = document.getElementById('category');
+const saveBtn = document.getElementById('saveBtn');
+const genBtn = document.getElementById('genBtn');
+const eyeBtn = document.getElementById('eyeBtn');
+const passList = document.getElementById('passList');
+const count = document.getElementById('count');
+const strengthBar = document.getElementById('strengthBar');
+const strengthText = document.getElementById('strengthText');
+const msg = document.getElementById('msg');
+const masterPrompt = document.getElementById('masterPrompt');
+const forgotScreen = document.getElementById('forgotScreen');
+
+// State
+let masterKey = null;
+let passwords = [];
+let unlocked = false;
+
+// Start up
+function init() {
+    if (!localStorage.getItem('hasMaster')) {
+        // First time
+        let pass = prompt("Create master password (min 4 chars):");
+        if (!pass || pass.length < 4) {
+            alert("Need at least 4 chars");
+            init();
+            return;
+        }
+        let confirmPass = prompt("Confirm password:");
+        if (pass !== confirmPass) {
+            alert("Passwords don't match");
+            init();
+            return;
+        }
+        // Simple hash
+        let hash = 0;
+        for (let i = 0; i < pass.length; i++) {
+            hash = ((hash << 5) - hash) + pass.charCodeAt(i);
+        }
+        localStorage.setItem('masterHash', hash.toString());
+        localStorage.setItem('hasMaster', 'true');
+        masterKey = pass;
+        unlocked = true;
+        showMsg('Master password set');
+    } else {
+        // Need to unlock
+        masterPrompt.style.display = 'flex';
+    }
+    updateList();
+}
+
+// Toggle password visibility
+eyeBtn.onclick = function() {
+    if (password.type === 'password') {
+        password.type = 'text';
+        eyeBtn.textContent = '🙈';
+    } else {
+        password.type = 'password';
+        eyeBtn.textContent = '👁';
+    }
+};
+
+// Check password strength
+password.oninput = function() {
+    let p = this.value;
+    let score = 0;
+    if (p.length >= 8) score++;
+    if (/[a-z]/.test(p)) score++;
+    if (/[A-Z]/.test(p)) score++;
+    if (/[0-9]/.test(p)) score++;
+    let color = 'red', text = 'Weak';
+    if (score > 3) { color = 'green'; text = 'Strong'; } 
+    else if (score > 1) { color = 'orange'; text = 'Medium'; }
+    strengthBar.style.width = (score * 20) + '%';
+    strengthBar.style.backgroundColor = color;
+    strengthText.textContent = 'Strength: ' + text;
+    strengthText.style.color = color;
+};
+
+// Generate password
+genBtn.onclick = function() {
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%';
+    let pass = '';
+    pass += chars[Math.floor(Math.random() * 26)];
+    pass += chars[Math.floor(Math.random() * 26) + 26];
+    pass += chars[Math.floor(Math.random() * 10) + 52];
+    pass += chars[Math.floor(Math.random() * 5) + 62];
+    for (let i = 0; i < 8; i++) {
+        pass += chars[Math.floor(Math.random() * chars.length)];
+    }
+    pass = pass.split('').sort(() => Math.random() - 0.5).join('');
+    password.value = pass;
+    password.oninput();
+};
+
+// Encryption functions
+function encrypt(text, key) {
+    let result = '';
+    for (let i = 0; i < text.length; i++) {
+        result += String.fromCharCode(text.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+    }
+    return btoa(result);
+}
+function decrypt(encrypted, key) {
+    try {
+        let decoded = atob(encrypted);
+        let result = '';
+        for (let i = 0; i < decoded.length; i++) {
+            result += String.fromCharCode(decoded.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+        }
+        return result;
+    } catch(e) { return null; }
+}
+
+// Save password
+saveBtn.onclick = function() {
+    if (!unlocked) {
+        showMsg('Unlock first', 'error');
+        masterPrompt.style.display = 'flex';
+        return;
+    }
+    let web = website.value.trim();
+    let user = username.value.trim();
+    let pass = password.value.trim();
+    let cat = category.value;
+    if (!web || !user || !pass) {
+        showMsg('Fill all fields', 'error');
+        return;
+    }
+    // Encrypt and save
+    let encrypted = encrypt(pass, masterKey);
+    let saved = localStorage.getItem('encryptedPasswords');
+    passwords = saved ? JSON.parse(saved) : [];
+    passwords.push({
+        id: Date.now(),
+        website: web,
+        username: user,
+        password: encrypted,
+        category: cat
+    });
+    localStorage.setItem('encryptedPasswords', JSON.stringify(passwords));
+    updateList();
+    website.value = ''; username.value = ''; password.value = '';
+    strengthBar.style.width = '0';
+    strengthText.textContent = 'Strength: None';
+    showMsg('Saved');
+};
+
+// Update list display
+function updateList() {
+    if (!unlocked) {
+        passList.innerHTML = '<div class="empty">🔒 Locked - enter master password</div>';
+        count.textContent = '?';
+        return;
+    }
+    let saved = localStorage.getItem('encryptedPasswords');
+    passwords = saved ? JSON.parse(saved) : [];
+    count.textContent = passwords.length;
+    if (passwords.length === 0) {
+        passList.innerHTML = '<div class="empty">No passwords saved yet</div>';
+        return;
+    }
+    let html = '';
+    passwords.forEach(p => {
+        html += `
+        <div class="pass-item">
+            <div class="item-top">
+                <div class="item-name">${p.website}</div>
+                <div class="item-cat">${p.category}</div>
+            </div>
+            <div class="item-user">${p.username}</div>
+            <div class="item-pass">
+                <span class="pass-dots" id="pass-${p.id}">🔒 Encrypted</span>
+                <button class="act-btn show-btn" onclick="showPass(${p.id})">Show</button>
+            </div>
+            <div class="item-actions">
+                <button class="act-btn copy-btn" onclick="copyPass(${p.id})">Copy</button>
+                <button class="act-btn del-btn" onclick="deletePass(${p.id})">Delete</button>
+            </div>
+        </div>`;
+    });
+    passList.innerHTML = html;
+}
+
+// Show password
+function showPass(id) {
+    if (!unlocked) { showMsg('Unlock first', 'error'); return; }
+    let p = passwords.find(x => x.id === id);
+    if (!p) return;
+    let decrypted = decrypt(p.password, masterKey);
+    let elem = document.getElementById('pass-' + id);
+    let btn = elem.nextElementSibling;
+    if (elem.textContent === '🔒 Encrypted') {
+        elem.textContent = decrypted || '[error]';
+        btn.textContent = 'Hide';
+        setTimeout(() => {
+            if (elem.textContent !== '🔒 Encrypted') {
+                elem.textContent = '🔒 Encrypted';
+                btn.textContent = 'Show';
+            }
+        }, 5000);
+    } else {
+        elem.textContent = '🔒 Encrypted';
+        btn.textContent = 'Show';
+    }
+}
+
+// Copy password
+function copyPass(id) {
+    if (!unlocked) { showMsg('Unlock first', 'error'); return; }
+    let p = passwords.find(x => x.id === id);
+    if (!p) return;
+    let decrypted = decrypt(p.password, masterKey);
+    navigator.clipboard.writeText(decrypted).then(() => {
+        showMsg('Copied');
+    });
+}
+
+// Delete password
+function deletePass(id) {
+    if (!unlocked) return;
+    if (!confirm('Delete?')) return;
+    passwords = passwords.filter(p => p.id !== id);
+    localStorage.setItem('encryptedPasswords', JSON.stringify(passwords));
+    updateList();
+    showMsg('Deleted');
+}
+
+// Master password functions
+function checkMaster() {
+    let entered = document.getElementById('masterInput').value;
+    let savedHash = localStorage.getItem('masterHash');
+    // Hash entered
+    let hash = 0;
+    for (let i = 0; i < entered.length; i++) {
+        hash = ((hash << 5) - hash) + entered.charCodeAt(i);
+    }
+    if (hash.toString() === savedHash) {
+        masterKey = entered;
+        unlocked = true;
+        masterPrompt.style.display = 'none';
+        updateList();
+        showMsg('Unlocked');
+    } else {
+        showMsg('Wrong password', 'error');
+    }
+}
+
+function showForgot() {
+    masterPrompt.style.display = 'none';
+    forgotScreen.style.display = 'flex';
+}
+
+function closeForgot() {
+    forgotScreen.style.display = 'none';
+    masterPrompt.style.display = 'flex';
+}
+
+function resetMaster() {
+    let newPass = document.getElementById('newMasterForgot').value;
+    let confirmPass = document.getElementById('confirmMasterForgot').value;
+    if (!newPass || newPass !== confirmPass) {
+        showMsg('Passwords dont match', 'error');
+        return;
+    }
+    if (!confirm('Delete ALL passwords?')) return;
+    // Delete and reset
+    localStorage.removeItem('encryptedPasswords');
+    let hash = 0;
+    for (let i = 0; i < newPass.length; i++) {
+        hash = ((hash << 5) - hash) + newPass.charCodeAt(i);
+    }
+    localStorage.setItem('masterHash', hash.toString());
+    localStorage.setItem('hasMaster', 'true');
+    masterKey = newPass;
+    unlocked = true;
+    passwords = [];
+    forgotScreen.style.display = 'none';
+    updateList();
+    showMsg('Reset done', 'error');
+}
+
+// Show message
+function showMsg(text, type) {
+    msg.textContent = text;
+    msg.className = 'msg' + (type === 'error' ? ' error' : '');
+    msg.style.display = 'block';
+    setTimeout(() => { msg.style.display = 'none'; }, 2000);
+}
+
+// Start
+window.onload = init;
+</script>
+</body>
+</html>
