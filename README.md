@@ -1,6 +1,6 @@
 # Passlock
 A web-based password manager demo that checks if you are making thes best password you can!
-Passlock is only my third css included project i got a lot of help form youtube, so please forgive me if its not amazing.
+Passlock is only my third css included project I got a lot of help from youtube, so please forgive me if its not amazing.
 
 I made Passlock since it's a buzzkill having to scroll back on Google for all my passwords and not have it in one place.
 
@@ -19,17 +19,28 @@ Still working on it up to the 14 hour Quota so stay tuned for updates in the Cha
 
 
 # Photos
+<img width="532" height="311" alt="image" src="https://github.com/user-attachments/assets/42bf3e3c-854d-4f4d-8617-d0a579dec059" />
 
-<img width="559" height="488" alt="image" src="https://github.com/user-attachments/assets/f19ca3ea-3289-4eef-91b4-8f321cd1a850" />
 entry field for website, password, the user and the type of website
 
-<img width="526" height="317" alt="image" src="https://github.com/user-attachments/assets/bc6d69cb-3acb-409d-aa69-07feab5bef97" />
+<img width="835" height="401" alt="image" src="https://github.com/user-attachments/assets/02ba8504-5dfa-48bf-9cf7-144fcda7d79c" />#
+
+
+
+
 
 a box for all passwords, blurred out for privacy
 
 
-<img width="1428" height="728" alt="image" src="https://github.com/user-attachments/assets/a2e45bf9-36ac-4d25-a2f4-a98b152fd125" />
 
-full website, take note of how while you type the password it can also be censored!
+
+
+<img width="870" height="404" alt="image" src="https://github.com/user-attachments/assets/b204afcc-56d0-4e67-964e-bf1620c80d2f" />
+
+
+
+
+
+Full website, take note of how while you type the password it can also be censored!
 
 
