@@ -16,7 +16,7 @@ Still working on it up to the 14 hour Quota so stay tuned for updates in the Cha
 
 1.04-  Added a scroll sidebar for if you have several passwords
 
-1.05 - 04/01/25 - -
+1.05 - 04/01/25 - -added night mode, and redid the encryption key from a ceaser shift to something harder
 
 
 
