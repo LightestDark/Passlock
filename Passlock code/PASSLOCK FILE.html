@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>PassLock</title>
+<title>PassLock - Password Manager</title>
 <style>
 body {
     font-family: Arial, sans-serif;
@@ -60,6 +60,7 @@ input, select {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    box-sizing: border-box;
 }
 .pass-wrap {
     position: relative;
@@ -86,6 +87,7 @@ input, select {
     width: 0;
     background: red;
     border-radius: 3px;
+    transition: width 0.3s, background 0.3s;
 }
 .buttons {
     display: flex;
@@ -100,6 +102,7 @@ button {
     border-radius: 5px;
     cursor: pointer;
     flex: 1;
+    font-size: 14px;
 }
 button:hover {
     background: #5b4bd4;
@@ -156,6 +159,7 @@ button:hover {
 }
 .pass-dots {
     font-family: monospace;
+    letter-spacing: 2px;
 }
 .item-actions {
     display: flex;
@@ -232,39 +236,6 @@ footer {
     color: #666;
     font-size: 13px;
 }
-
-/* Dark mode toggle */
-.theme-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-    font-size: 18px;
-    z-index: 100;
-}
-body.dark-mode {
-    background: #1a1a2e;
-}
-body.dark-mode .wrapper {
-    background: #16213e;
-    color: #e6e6e6;
-}
-body.dark-mode .box {
-    background: #0f3460;
-    border-color: #1a5f7a;
-}
-body.dark-mode input,
-body.dark-mode select {
-    background: #1a1a2e;
-    color: #e6e6e6;
-    border-color: #1a5f7a;
-}
 </style>
 </head>
 <body>
@@ -288,7 +259,7 @@ body.dark-mode select {
                     <label>Password</label>
                     <div class="pass-wrap">
                         <input type="password" id="password" placeholder="your password">
-                        <button class="eye-btn" id="eyeBtn">👁</button>
+                        <button class="eye-btn" id="eyeBtn" type="button">👁</button>
                     </div>
                     <div class="strength">
                         <div class="strength-bar" id="strengthBar"></div>
@@ -298,12 +269,15 @@ body.dark-mode select {
                 <div class="form-group">
                     <label>Category</label>
                     <select id="category">
-                        <option>Social</option><option>Email</option><option>Bank</option><option>Work</option>
+                        <option>Social</option>
+                        <option>Email</option>
+                        <option>Bank</option>
+                        <option>Work</option>
                     </select>
                 </div>
                 <div class="buttons">
-                    <button id="saveBtn">💾 Save</button>
-                    <button class="gen-btn" id="genBtn">🎲 Generate</button>
+                    <button id="saveBtn" type="button">💾 Save</button>
+                    <button class="gen-btn" id="genBtn" type="button">🎲 Generate</button>
                 </div>
             </div>
         </div>
@@ -315,14 +289,12 @@ body.dark-mode select {
                     <div class="empty">No passwords yet</div>
                 </div>
             </div>
-            <button onclick="showForgot()" style="width:100%; margin-top:10px; background:#e17055;">Forgot Master Password?</button>
+            <button onclick="showForgot()" type="button" style="width:100%; margin-top:10px; background:#e17055;">Forgot Master Password?</button>
         </div>
     </div>
     
     <footer>Passwords encrypted in your browser</footer>
 </div>
-
-<button class="theme-toggle" onclick="toggleTheme()">🌙</button>
 
 <div class="msg" id="msg">Message</div>
 
@@ -331,8 +303,8 @@ body.dark-mode select {
         <h3>Enter Master Password</h3>
         <p style="font-size:14px; color:#666;">Enter your master password</p>
         <input type="password" id="masterInput" placeholder="master password" style="width:100%; padding:10px; margin:15px 0;">
-        <button onclick="checkMaster()" style="width:100%;">Unlock</button>
-        <button onclick="showForgot()" style="width:100%; margin-top:10px; background:#ccc;">Forgot?</button>
+        <button onclick="checkMaster()" type="button" style="width:100%;">Unlock</button>
+        <button onclick="showForgot()" type="button" style="width:100%; margin-top:10px; background:#ccc;">Forgot?</button>
     </div>
 </div>
 
@@ -342,15 +314,15 @@ body.dark-mode select {
         <p style="color:red; font-size:13px;">⚠️ This deletes ALL passwords!</p>
         <input type="password" id="newMasterForgot" placeholder="new password" style="width:100%; padding:10px; margin:10px 0;">
         <input type="password" id="confirmMasterForgot" placeholder="confirm" style="width:100%; padding:10px; margin-bottom:15px;">
-        <button onclick="resetMaster()" style="width:100%; background:#e17055;">Reset & Delete All</button>
-        <button onclick="closeForgot()" style="width:100%; margin-top:10px; background:#ccc;">Cancel</button>
+        <button onclick="resetMaster()" type="button" style="width:100%; background:#e17055;">Reset & Delete All</button>
+        <button onclick="closeForgot()" type="button" style="width:100%; margin-top:10px; background:#ccc;">Cancel</button>
     </div>
 </div>
 
 <script>
 // ===== SIMPLE FIXED VERSION =====
 
-// Get elements
+// Get all elements
 const website = document.getElementById('website');
 const username = document.getElementById('username');
 const password = document.getElementById('password');
@@ -365,62 +337,74 @@ const strengthText = document.getElementById('strengthText');
 const msg = document.getElementById('msg');
 const masterPrompt = document.getElementById('masterPrompt');
 const forgotScreen = document.getElementById('forgotScreen');
+const masterInput = document.getElementById('masterInput');
+const newMasterForgot = document.getElementById('newMasterForgot');
+const confirmMasterForgot = document.getElementById('confirmMasterForgot');
 
-// State
+// App state
 let masterKey = null;
 let passwords = [];
 let unlocked = false;
 
-// Start up - FIXED
-function init() {
+// Initialize the app when page loads
+window.addEventListener('DOMContentLoaded', function() {
     console.log("Starting app...");
     
-    // Check if first time
+    // Check if first time user
     if (!localStorage.getItem('hasMaster')) {
         console.log("First time setup");
-        // Create master password
-        let pass = prompt("Create master password (min 4 chars):");
-        if (!pass || pass.length < 4) {
-            alert("Need at least 4 chars");
-            init();
-            return;
-        }
-        let confirmPass = prompt("Confirm password:");
-        if (pass !== confirmPass) {
-            alert("Passwords don't match");
-            init();
-            return;
-        }
-        // Save hash
-        let hash = 0;
-        for (let i = 0; i < pass.length; i++) {
-            hash = ((hash << 5) - hash) + pass.charCodeAt(i);
-        }
-        localStorage.setItem('masterHash', hash.toString());
-        localStorage.setItem('hasMaster', 'true');
-        masterKey = pass;
-        unlocked = true;
-        showMsg('Master password set');
+        setupMasterPassword();
     } else {
         console.log("Already has master, showing prompt");
-        // Show unlock modal
         masterPrompt.style.display = 'flex';
     }
     
-    // Load passwords
-    updateList();
+    // Load any saved passwords
+    loadPasswords();
     
-    // Setup event listeners
-    setupListeners();
+    // Setup all button click handlers
+    setupButtonHandlers();
+});
+
+// Setup master password for new users
+function setupMasterPassword() {
+    let pass = prompt("Create master password (min 4 characters):");
+    if (!pass || pass.length < 4) {
+        alert("Need at least 4 characters");
+        setupMasterPassword();
+        return;
+    }
+    
+    let confirmPass = prompt("Confirm password:");
+    if (pass !== confirmPass) {
+        alert("Passwords don't match");
+        setupMasterPassword();
+        return;
+    }
+    
+    // Simple hash for storage
+    let hash = 0;
+    for (let i = 0; i < pass.length; i++) {
+        hash = ((hash << 5) - hash) + pass.charCodeAt(i);
+    }
+    localStorage.setItem('masterHash', hash.toString());
+    localStorage.setItem('hasMaster', 'true');
+    masterKey = pass;
+    unlocked = true;
+    showMsg('Master password set successfully');
 }
 
-// Setup event listeners - FIXED
-function setupListeners() {
-    console.log("Setting up listeners");
-    
-    // Eye button - WORKS
-    eyeBtn.onclick = function() {
-        console.log("Eye button clicked");
+// Load passwords from localStorage
+function loadPasswords() {
+    let saved = localStorage.getItem('encryptedPasswords');
+    passwords = saved ? JSON.parse(saved) : [];
+    updateList();
+}
+
+// Setup all button click handlers
+function setupButtonHandlers() {
+    // Eye button for password visibility
+    eyeBtn.addEventListener('click', function() {
         if (password.type === 'password') {
             password.type = 'text';
             eyeBtn.textContent = '🙈';
@@ -428,52 +412,57 @@ function setupListeners() {
             password.type = 'password';
             eyeBtn.textContent = '👁';
         }
-    };
+    });
     
-    // Password strength - WORKS
-    password.oninput = function() {
+    // Password strength check
+    password.addEventListener('input', function() {
         let p = this.value;
         let score = 0;
         if (p.length >= 8) score++;
         if (/[a-z]/.test(p)) score++;
         if (/[A-Z]/.test(p)) score++;
         if (/[0-9]/.test(p)) score++;
+        if (/[^A-Za-z0-9]/.test(p)) score++;
+        
         let color = 'red', text = 'Weak';
         if (score > 3) { color = 'green'; text = 'Strong'; } 
         else if (score > 1) { color = 'orange'; text = 'Medium'; }
+        
         strengthBar.style.width = (score * 20) + '%';
         strengthBar.style.backgroundColor = color;
         strengthText.textContent = 'Strength: ' + text;
         strengthText.style.color = color;
-    };
+    });
     
-    // Generate password - WORKS
-    genBtn.onclick = function() {
-        console.log("Generate button clicked");
+    // Generate password button
+    genBtn.addEventListener('click', function() {
         const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%';
         let pass = '';
-        pass += chars[Math.floor(Math.random() * 26)];
-        pass += chars[Math.floor(Math.random() * 26) + 26];
-        pass += chars[Math.floor(Math.random() * 10) + 52];
-        pass += chars[Math.floor(Math.random() * 5) + 62];
+        pass += chars[Math.floor(Math.random() * 26)]; // lowercase
+        pass += chars[Math.floor(Math.random() * 26) + 26]; // uppercase
+        pass += chars[Math.floor(Math.random() * 10) + 52]; // number
+        pass += chars[Math.floor(Math.random() * 5) + 62]; // symbol
+        
         for (let i = 0; i < 8; i++) {
             pass += chars[Math.floor(Math.random() * chars.length)];
         }
-        // Shuffle
+        
+        // Shuffle the password
         pass = pass.split('').sort(() => Math.random() - 0.5).join('');
         password.value = pass;
-        // Trigger strength check
-        let event = new Event('input');
-        password.dispatchEvent(event);
-    };
-    
-    // Save button - FIXED
-    saveBtn.onclick = function() {
-        console.log("Save button clicked");
-        console.log("Unlocked:", unlocked);
         
+        // Trigger strength check
+        password.dispatchEvent(new Event('input'));
+        
+        // Show the generated password
+        password.type = 'text';
+        eyeBtn.textContent = '🙈';
+    });
+    
+    // Save button
+    saveBtn.addEventListener('click', function() {
         if (!unlocked) {
-            showMsg('Unlock first', 'error');
+            showMsg('Please unlock first', 'error');
             masterPrompt.style.display = 'flex';
             return;
         }
@@ -484,20 +473,14 @@ function setupListeners() {
         let cat = category.value;
         
         if (!web || !user || !pass) {
-            showMsg('Fill all fields', 'error');
+            showMsg('Please fill all fields', 'error');
             return;
         }
         
-        console.log("Saving for:", web);
-        
-        // Simple encrypt
+        // Encrypt the password
         let encrypted = encrypt(pass, masterKey);
         
-        // Get saved
-        let saved = localStorage.getItem('encryptedPasswords');
-        passwords = saved ? JSON.parse(saved) : [];
-        
-        // Add new
+        // Add to passwords array
         passwords.push({
             id: Date.now(),
             website: web,
@@ -506,7 +489,7 @@ function setupListeners() {
             category: cat
         });
         
-        // Save
+        // Save to localStorage
         localStorage.setItem('encryptedPasswords', JSON.stringify(passwords));
         
         // Update UI
@@ -516,14 +499,16 @@ function setupListeners() {
         website.value = '';
         username.value = '';
         password.value = '';
+        password.type = 'password';
+        eyeBtn.textContent = '👁';
         strengthBar.style.width = '0';
         strengthText.textContent = 'Strength: None';
         
-        showMsg('Saved');
-    };
+        showMsg('Password saved successfully!');
+    });
 }
 
-// Encryption functions
+// Simple encryption
 function encrypt(text, key) {
     let result = '';
     for (let i = 0; i < text.length; i++) {
@@ -531,6 +516,8 @@ function encrypt(text, key) {
     }
     return btoa(result);
 }
+
+// Simple decryption
 function decrypt(encrypted, key) {
     try {
         let decoded = atob(encrypted);
@@ -539,21 +526,18 @@ function decrypt(encrypted, key) {
             result += String.fromCharCode(decoded.charCodeAt(i) ^ key.charCodeAt(i % key.length));
         }
         return result;
-    } catch(e) { return null; }
+    } catch(e) { 
+        return null; 
+    }
 }
 
-// Update list - FIXED
+// Update password list display
 function updateList() {
-    console.log("Updating list, unlocked:", unlocked);
-    
     if (!unlocked) {
         passList.innerHTML = '<div class="empty">🔒 Locked - enter master password</div>';
         count.textContent = '?';
         return;
     }
-    
-    let saved = localStorage.getItem('encryptedPasswords');
-    passwords = saved ? JSON.parse(saved) : [];
     
     count.textContent = passwords.length;
     
@@ -567,41 +551,42 @@ function updateList() {
         html += `
         <div class="pass-item">
             <div class="item-top">
-                <div class="item-name">${p.website}</div>
-                <div class="item-cat">${p.category}</div>
+                <div class="item-name">${escapeHtml(p.website)}</div>
+                <div class="item-cat">${escapeHtml(p.category)}</div>
             </div>
-            <div class="item-user">${p.username}</div>
+            <div class="item-user">${escapeHtml(p.username)}</div>
             <div class="item-pass">
                 <span class="pass-dots" id="pass-${p.id}">🔒 Encrypted</span>
-                <button class="act-btn show-btn" onclick="showPass(${p.id})">Show</button>
+                <button class="act-btn show-btn" onclick="showPassword(${p.id})" type="button">Show</button>
             </div>
             <div class="item-actions">
-                <button class="act-btn copy-btn" onclick="copyPass(${p.id})">Copy</button>
-                <button class="act-btn del-btn" onclick="deletePass(${p.id})">Delete</button>
+                <button class="act-btn copy-btn" onclick="copyPassword(${p.id})" type="button">Copy</button>
+                <button class="act-btn del-btn" onclick="deletePassword(${p.id})" type="button">Delete</button>
             </div>
         </div>`;
     });
     passList.innerHTML = html;
 }
 
-// Show password - FIXED
-function showPass(id) {
-    console.log("Show password for ID:", id);
+// Show/hide password
+function showPassword(id) {
     if (!unlocked) {
-        showMsg('Unlock first', 'error');
+        showMsg('Please unlock first', 'error');
         return;
     }
     
     let p = passwords.find(x => x.id === id);
     if (!p) return;
     
-    let decrypted = decrypt(p.password, masterKey);
     let elem = document.getElementById('pass-' + id);
     let btn = elem.nextElementSibling;
     
     if (elem.textContent === '🔒 Encrypted') {
+        let decrypted = decrypt(p.password, masterKey);
         elem.textContent = decrypted || '[error]';
         btn.textContent = 'Hide';
+        
+        // Auto hide after 5 seconds
         setTimeout(() => {
             if (elem.textContent !== '🔒 Encrypted') {
                 elem.textContent = '🔒 Encrypted';
@@ -614,11 +599,10 @@ function showPass(id) {
     }
 }
 
-// Copy password - FIXED
-function copyPass(id) {
-    console.log("Copy password for ID:", id);
+// Copy password to clipboard
+function copyPassword(id) {
     if (!unlocked) {
-        showMsg('Unlock first', 'error');
+        showMsg('Please unlock first', 'error');
         return;
     }
     
@@ -626,76 +610,79 @@ function copyPass(id) {
     if (!p) return;
     
     let decrypted = decrypt(p.password, masterKey);
+    if (!decrypted) return;
+    
     navigator.clipboard.writeText(decrypted).then(() => {
-        showMsg('Copied');
+        showMsg('Password copied to clipboard!');
     });
 }
 
-// Delete password - FIXED
-function deletePass(id) {
-    console.log("Delete password for ID:", id);
+// Delete password
+function deletePassword(id) {
     if (!unlocked) return;
     
-    if (!confirm('Delete?')) return;
-    passwords = passwords.filter(p => p.id !== id);
-    localStorage.setItem('encryptedPasswords', JSON.stringify(passwords));
-    updateList();
-    showMsg('Deleted');
+    if (confirm('Are you sure you want to delete this password?')) {
+        passwords = passwords.filter(p => p.id !== id);
+        localStorage.setItem('encryptedPasswords', JSON.stringify(passwords));
+        updateList();
+        showMsg('Password deleted');
+    }
 }
 
-// Master password functions - FIXED
+// Check master password
 function checkMaster() {
-    console.log("Checking master password");
-    let entered = document.getElementById('masterInput').value;
+    let entered = masterInput.value;
     let savedHash = localStorage.getItem('masterHash');
     
-    // Hash entered
+    // Calculate hash of entered password
     let hash = 0;
     for (let i = 0; i < entered.length; i++) {
         hash = ((hash << 5) - hash) + entered.charCodeAt(i);
     }
     
-    console.log("Entered hash:", hash.toString());
-    console.log("Saved hash:", savedHash);
-    
     if (hash.toString() === savedHash) {
         masterKey = entered;
         unlocked = true;
         masterPrompt.style.display = 'none';
+        masterInput.value = '';
         updateList();
-        showMsg('Unlocked');
+        showMsg('Vault unlocked!');
     } else {
         showMsg('Wrong password', 'error');
+        masterInput.select();
     }
 }
 
+// Show forgot password screen
 function showForgot() {
-    console.log("Show forgot screen");
     masterPrompt.style.display = 'none';
     forgotScreen.style.display = 'flex';
 }
 
+// Close forgot password screen
 function closeForgot() {
     forgotScreen.style.display = 'none';
     masterPrompt.style.display = 'flex';
 }
 
+// Reset master password
 function resetMaster() {
-    console.log("Resetting master password");
-    let newPass = document.getElementById('newMasterForgot').value;
-    let confirmPass = document.getElementById('confirmMasterForgot').value;
+    let newPass = newMasterForgot.value;
+    let confirmPass = confirmMasterForgot.value;
     
     if (!newPass || newPass !== confirmPass) {
-        showMsg('Passwords dont match', 'error');
+        showMsg('Passwords do not match', 'error');
         return;
     }
     
-    if (!confirm('Delete ALL passwords?')) return;
+    if (!confirm('This will delete ALL saved passwords. Are you sure?')) {
+        return;
+    }
     
-    // Delete everything
+    // Delete all passwords
     localStorage.removeItem('encryptedPasswords');
     
-    // Set new hash
+    // Set new master hash
     let hash = 0;
     for (let i = 0; i < newPass.length; i++) {
         hash = ((hash << 5) - hash) + newPass.charCodeAt(i);
@@ -706,26 +693,17 @@ function resetMaster() {
     masterKey = newPass;
     unlocked = true;
     passwords = [];
+    
     forgotScreen.style.display = 'none';
+    newMasterForgot.value = '';
+    confirmMasterForgot.value = '';
+    
     updateList();
-    showMsg('Reset done', 'error');
-}
-
-// Theme toggle - FIXED
-function toggleTheme() {
-    console.log("Toggling theme");
-    document.body.classList.toggle('dark-mode');
-    let btn = document.querySelector('.theme-toggle');
-    if (document.body.classList.contains('dark-mode')) {
-        btn.textContent = '☀️';
-    } else {
-        btn.textContent = '🌙';
-    }
+    showMsg('Master password reset. All passwords deleted.', 'error');
 }
 
 // Show message
 function showMsg(text, type) {
-    console.log("Show message:", text);
     msg.textContent = text;
     msg.className = 'msg' + (type === 'error' ? ' error' : '');
     msg.style.display = 'block';
@@ -734,8 +712,12 @@ function showMsg(text, type) {
     }, 2000);
 }
 
-// Start the app
-window.onload = init;
+// Escape HTML to prevent XSS
+function escapeHtml(text) {
+    let div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
 </script>
 </body>
 </html>
