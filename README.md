@@ -2,6 +2,8 @@
 A web-based password manager demo that checks if you are making thes best password you can!
 Passlock is only my third css included project I got a lot of help from youtube, so please forgive me if its not amazing.
 
+DISCLAIMER - CSS has code i borrowed from a W3 SCHOOLS TUTORIAL THAT I THEN CHANGED TO FIT MY WEBSITE AND MODIFIED SO ITS ORIGINAL INLCUDING THE EMOJIS USED 
+
 I made Passlock since it's a buzzkill having to scroll back on Google for all my passwords and not have it in one place.
 
 Very easy and lightweight, I managed to put it all in one file using a combination of Python for backend, HTML and CSS for the website!
