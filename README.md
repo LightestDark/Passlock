@@ -22,6 +22,8 @@ Still working on it up to the 14 hour Quota so stay tuned for updates in the Cha
 
 1.06 - Fixed ui issues when resizing browser 
 
+1.07 - Completely revamped UI, handwrote all the code bocks myself and got rid of extra features like a rianbow mode since they were impeding the functionality. I gave it a hacker vibe after researching on YT how to!
+
 for reference 
 <img width="1376" height="784" alt="image" src="https://github.com/user-attachments/assets/559c8537-a528-4258-b79f-5c6ab1723b0f" />
 
