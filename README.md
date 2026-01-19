@@ -1,6 +1,10 @@
 # Passlock
-A web-based password manager demo that checks if you are making thes best password you can!
-Passlock is only my third css included project I got a lot of help from youtube, so please forgive me if its not amazing.
+A web-based password manager demo that checks if you are making the  best password you can!
+It is two step verified with a master password to even login the website, and all passwords are saved with a weak encryption that i made myself with a key shift in the numbers/letters.
+
+Logic and encryption is all JS.
+
+Passlock is only my third css included project I got a lot of help from youtube, so please forgive me if its not amazing, learnt a lot form W3 schools about encryption to help in my website.
 
 DISCLAIMER - CSS has code i borrowed from a W3 SCHOOLS TUTORIAL THAT I THEN CHANGED TO FIT MY WEBSITE AND MODIFIED SO ITS ORIGINAL INLCUDING THE EMOJIS USED 
 
