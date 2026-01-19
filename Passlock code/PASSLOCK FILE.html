@@ -1,66 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>PassLock - Password Manager</title>
+<title>PassLock</title>
 <style>
 body {
-    font-family: Arial, sans-serif;
-    background: #6c5ce7;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: #0d0d0d;
     margin: 0;
     padding: 20px;
+    color: #ddd;
 }
 .wrapper {
     max-width: 1000px;
     margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
+    background: #121212;
+    padding: 25px;
+    border-radius: 6px;
+    border: 1px solid #2a2a2a;
 }
 h1 {
     text-align: center;
-    color: #333;
-    margin-bottom: 5px;
+    color: #2ecc71;
+    margin-bottom: 8px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
 }
-.tagline {
+.subtitle {
     text-align: center;
-    color: #666;
+    color: #777;
     font-size: 14px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 .main {
     display: flex;
-    gap: 20px;
+    gap: 25px;
 }
 .left, .right {
     flex: 1;
 }
 .box {
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 15px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    padding: 22px;
+    border-radius: 5px;
+    margin-bottom: 18px;
 }
 h2 {
-    color: #444;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #6c5ce7;
-    padding-bottom: 8px;
+    color: #2ecc71;
+    margin-bottom: 20px;
+    font-weight: 500;
+    font-size: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #2a2a2a;
 }
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    margin-bottom: 6px;
+    color: #aaa;
+    font-size: 14px;
 }
 input, select {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
+    border: 1px solid #3a3a3a;
+    border-radius: 4px;
+    background: #0f0f0f;
+    color: #ddd;
+    font-family: inherit;
+}
+input:focus, select:focus {
+    outline: none;
+    border-color: #2ecc71;
 }
 .pass-wrap {
     position: relative;
@@ -70,144 +83,164 @@ input, select {
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    background: none;
+    background: transparent;
     border: none;
+    color: #777;
     cursor: pointer;
-    font-size: 16px;
-    padding: 5px;
+    padding: 4px;
+    font-size: 14px;
+}
+.eye-btn:hover {
+    color: #2ecc71;
 }
 .strength {
-    height: 5px;
-    background: #eee;
-    margin-top: 5px;
-    border-radius: 3px;
+    height: 4px;
+    background: #2a2a2a;
+    margin-top: 8px;
+    border-radius: 2px;
 }
 .strength-bar {
     height: 100%;
     width: 0;
-    background: red;
-    border-radius: 3px;
-    transition: width 0.3s, background 0.3s;
+    border-radius: 2px;
+    transition: all 0.3s;
 }
 .buttons {
     display: flex;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 12px;
+    margin-top: 25px;
 }
 button {
-    padding: 12px;
-    background: #6c5ce7;
-    color: white;
-    border: none;
-    border-radius: 5px;
+    padding: 11px;
+    background: #1e3e1e;
+    color: #ddd;
+    border: 1px solid #2a5c2a;
+    border-radius: 4px;
     cursor: pointer;
     flex: 1;
-    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.2s;
 }
 button:hover {
-    background: #5b4bd4;
+    background: #2a5c2a;
 }
 .gen-btn {
-    background: #a29bfe;
+    background: #152a15;
 }
 .gen-btn:hover {
-    background: #8a7efe;
+    background: #1e3e1e;
 }
 .pass-list {
     max-height: 400px;
     overflow-y: auto;
-    padding: 10px;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 8px;
+    background: #0f0f0f;
+    border: 1px solid #2a2a2a;
+    border-radius: 4px;
 }
 .pass-item {
-    background: #f9f9f9;
-    border: 1px solid #eee;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 5px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    padding: 16px;
+    margin-bottom: 12px;
+    border-radius: 4px;
 }
 .item-top {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 .item-name {
-    font-weight: bold;
+    color: #ddd;
+    font-weight: 500;
 }
 .item-cat {
-    background: #e0e7ff;
+    background: #1e3e1e;
     padding: 3px 10px;
     border-radius: 12px;
     font-size: 12px;
-    color: #6c5ce7;
+    color: #7bc67b;
 }
 .item-user {
-    color: #666;
-    margin-bottom: 10px;
+    color: #888;
+    margin-bottom: 12px;
     font-size: 14px;
 }
 .item-pass {
-    background: white;
+    background: #0f0f0f;
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     display: flex;
     justify-content: space-between;
-    border-radius: 5px;
-    border: 1px solid #ddd;
+    border-radius: 4px;
+    border: 1px solid #333;
 }
 .pass-dots {
-    font-family: monospace;
-    letter-spacing: 2px;
+    font-family: 'SF Mono', Monaco, monospace;
+    letter-spacing: 1.5px;
+    color: #777;
 }
 .item-actions {
     display: flex;
     gap: 8px;
 }
 .act-btn {
-    padding: 6px 12px;
-    background: white;
-    border: 1px solid #ddd;
+    padding: 7px 12px;
+    background: #1a1a1a;
+    border: 1px solid #3a3a3a;
     cursor: pointer;
     font-size: 13px;
     flex: 1;
     border-radius: 4px;
+    color: #aaa;
+    transition: all 0.2s;
 }
-.show-btn {
-    color: #6c5ce7;
+.act-btn:hover {
+    background: #252525;
 }
-.copy-btn {
-    color: #00b894;
+.show-btn:hover {
+    color: #7bc67b;
+    border-color: #2a5c2a;
 }
-.del-btn {
-    color: #e17055;
+.copy-btn:hover {
+    color: #7bc67b;
+    border-color: #2a5c2a;
+}
+.del-btn:hover {
+    color: #c67b7b;
+    border-color: #5c2a2a;
 }
 .empty {
     text-align: center;
-    padding: 30px;
-    color: #888;
+    padding: 40px 20px;
+    color: #555;
+    font-style: italic;
 }
 .count {
-    background: #6c5ce7;
-    color: white;
+    background: #1e3e1e;
+    color: #7bc67b;
     padding: 3px 10px;
     border-radius: 12px;
-    font-size: 13px;
+    font-size: 12px;
+    margin-left: 10px;
 }
 .msg {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    background: #00b894;
-    color: white;
-    padding: 12px 20px;
+    top: 25px;
+    right: 25px;
+    background: #1e3e1e;
+    color: #7bc67b;
+    padding: 14px 22px;
     display: none;
     z-index: 1000;
-    border-radius: 5px;
+    border-radius: 4px;
+    border: 1px solid #2a5c2a;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
 .msg.error {
-    background: #e17055;
+    background: #3e1e1e;
+    color: #c67b7b;
+    border-color: #5c2a2a;
 }
 .setup-screen {
     position: fixed;
@@ -215,56 +248,81 @@ button:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.9);
     display: none;
     align-items: center;
     justify-content: center;
     z-index: 2000;
 }
 .setup-box {
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    width: 320px;
+    background: #1a1a1a;
+    padding: 28px;
+    border-radius: 5px;
+    width: 340px;
+    border: 1px solid #333;
 }
 .setup-box h3 {
     margin-top: 0;
+    color: #2ecc71;
+    font-weight: 500;
 }
 footer {
     text-align: center;
-    margin-top: 20px;
-    color: #666;
+    margin-top: 30px;
+    color: #555;
     font-size: 13px;
+}
+.forgot-btn {
+    width: 100%;
+    margin-top: 12px;
+    background: #3e1e1e;
+    border-color: #5c2a2a;
+}
+.forgot-btn:hover {
+    background: #5c2a2a;
+}
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #0f0f0f;
+}
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #444;
 }
 </style>
 </head>
 <body>
 <div class="wrapper">
-    <h1>🔐 PassLock</h1>
-    <div class="tagline">Store your passwords safely</div>
+    <h1>PassLock</h1>
+    <div class="subtitle">Secure Password Manager</div>
     
     <div class="main">
         <div class="left">
             <div class="box">
-                <h2>Add Password</h2>
+                <h2>Add New Password</h2>
                 <div class="form-group">
                     <label>Website</label>
-                    <input type="text" id="website" placeholder="google.com">
+                    <input type="text" id="website" placeholder="example.com">
                 </div>
                 <div class="form-group">
                     <label>Username</label>
-                    <input type="text" id="username" placeholder="user@gmail.com">
+                    <input type="text" id="username" placeholder="user@example.com">
                 </div>
                 <div class="form-group">
                     <label>Password</label>
                     <div class="pass-wrap">
-                        <input type="password" id="password" placeholder="your password">
+                        <input type="password" id="password" placeholder="Enter your password">
                         <button class="eye-btn" id="eyeBtn" type="button">👁</button>
                     </div>
                     <div class="strength">
                         <div class="strength-bar" id="strengthBar"></div>
                     </div>
-                    <div style="font-size:13px;" id="strengthText">Strength: None</div>
+                    <div style="font-size:12px; margin-top:5px;" id="strengthText">Strength: None</div>
                 </div>
                 <div class="form-group">
                     <label>Category</label>
@@ -273,27 +331,28 @@ footer {
                         <option>Email</option>
                         <option>Bank</option>
                         <option>Work</option>
+                        <option>Other</option>
                     </select>
                 </div>
                 <div class="buttons">
-                    <button id="saveBtn" type="button">💾 Save</button>
-                    <button class="gen-btn" id="genBtn" type="button">🎲 Generate</button>
+                    <button id="saveBtn" type="button">Save Password</button>
+                    <button class="gen-btn" id="genBtn" type="button">Generate</button>
                 </div>
             </div>
         </div>
         
         <div class="right">
             <div class="box">
-                <h2 style="display:inline;">Saved</h2> <span class="count" id="count">0</span>
+                <h2 style="display:inline;">Saved Passwords</h2><span class="count" id="count">0</span>
                 <div class="pass-list" id="passList">
-                    <div class="empty">No passwords yet</div>
+                    <div class="empty">No passwords stored yet</div>
                 </div>
             </div>
-            <button onclick="showForgot()" type="button" style="width:100%; margin-top:10px; background:#e17055;">Forgot Master Password?</button>
+            <button class="forgot-btn" onclick="showForgot()" type="button">Forgot Master Password?</button>
         </div>
     </div>
     
-    <footer>Passwords encrypted in your browser</footer>
+    <footer>All passwords are encrypted and stored locally in your browser</footer>
 </div>
 
 <div class="msg" id="msg">Message</div>
@@ -301,28 +360,25 @@ footer {
 <div class="setup-screen" id="masterPrompt">
     <div class="setup-box">
         <h3>Enter Master Password</h3>
-        <p style="font-size:14px; color:#666;">Enter your master password</p>
-        <input type="password" id="masterInput" placeholder="master password" style="width:100%; padding:10px; margin:15px 0;">
-        <button onclick="checkMaster()" type="button" style="width:100%;">Unlock</button>
-        <button onclick="showForgot()" type="button" style="width:100%; margin-top:10px; background:#ccc;">Forgot?</button>
+        <p style="color:#888; font-size:14px; margin-bottom:20px;">Enter your master password to unlock the vault</p>
+        <input type="password" id="masterInput" placeholder="Master password" style="width:100%; padding:10px; margin-bottom:20px;">
+        <button onclick="checkMaster()" type="button" style="width:100%;">Unlock Vault</button>
+        <button onclick="showForgot()" type="button" style="width:100%; margin-top:10px; background:#333;">Forgot Password?</button>
     </div>
 </div>
 
 <div class="setup-screen" id="forgotScreen">
     <div class="setup-box">
         <h3>Reset Master Password</h3>
-        <p style="color:red; font-size:13px;">⚠️ This deletes ALL passwords!</p>
-        <input type="password" id="newMasterForgot" placeholder="new password" style="width:100%; padding:10px; margin:10px 0;">
-        <input type="password" id="confirmMasterForgot" placeholder="confirm" style="width:100%; padding:10px; margin-bottom:15px;">
-        <button onclick="resetMaster()" type="button" style="width:100%; background:#e17055;">Reset & Delete All</button>
-        <button onclick="closeForgot()" type="button" style="width:100%; margin-top:10px; background:#ccc;">Cancel</button>
+        <p style="color:#c67b7b; font-size:13px; margin-bottom:15px;"> This will delete ALL stored passwords!</p>
+        <input type="password" id="newMasterForgot" placeholder="New master password" style="width:100%; padding:10px; margin:10px 0;">
+        <input type="password" id="confirmMasterForgot" placeholder="Confirm new password" style="width:100%; padding:10px; margin-bottom:20px;">
+        <button onclick="resetMaster()" type="button" style="width:100%; background:#5c2a2a;">Reset & Delete All</button>
+        <button onclick="closeForgot()" type="button" style="width:100%; margin-top:10px; background:#333;">Cancel</button>
     </div>
 </div>
 
 <script>
-// ===== SIMPLE FIXED VERSION =====
-
-// Get all elements
 const website = document.getElementById('website');
 const username = document.getElementById('username');
 const password = document.getElementById('password');
@@ -341,80 +397,53 @@ const masterInput = document.getElementById('masterInput');
 const newMasterForgot = document.getElementById('newMasterForgot');
 const confirmMasterForgot = document.getElementById('confirmMasterForgot');
 
-// App state
 let masterKey = null;
 let passwords = [];
 let unlocked = false;
 
-// Initialize the app when page loads
 window.addEventListener('DOMContentLoaded', function() {
-    console.log("Starting app...");
-    
-    // Check if first time user
     if (!localStorage.getItem('hasMaster')) {
-        console.log("First time setup");
-        setupMasterPassword();
+        let pass = prompt("Create a master password (minimum 4 characters):");
+        if (!pass || pass.length < 4) {
+            alert("Please enter at least 4 characters");
+            location.reload();
+            return;
+        }
+        
+        let confirmPass = prompt("Confirm master password:");
+        if (pass !== confirmPass) {
+            alert("Passwords don't match");
+            location.reload();
+            return;
+        }
+        
+        let hash = 0;
+        for (let i = 0; i < pass.length; i++) {
+            hash = ((hash << 5) - hash) + pass.charCodeAt(i);
+        }
+        localStorage.setItem('masterHash', hash.toString());
+        localStorage.setItem('hasMaster', 'true');
+        masterKey = pass;
+        unlocked = true;
+        showMsg('Master password set successfully');
     } else {
-        console.log("Already has master, showing prompt");
         masterPrompt.style.display = 'flex';
     }
     
-    // Load any saved passwords
-    loadPasswords();
-    
-    // Setup all button click handlers
-    setupButtonHandlers();
-});
-
-// Setup master password for new users
-function setupMasterPassword() {
-    let pass = prompt("Create master password (min 4 characters):");
-    if (!pass || pass.length < 4) {
-        alert("Need at least 4 characters");
-        setupMasterPassword();
-        return;
-    }
-    
-    let confirmPass = prompt("Confirm password:");
-    if (pass !== confirmPass) {
-        alert("Passwords don't match");
-        setupMasterPassword();
-        return;
-    }
-    
-    // Simple hash for storage
-    let hash = 0;
-    for (let i = 0; i < pass.length; i++) {
-        hash = ((hash << 5) - hash) + pass.charCodeAt(i);
-    }
-    localStorage.setItem('masterHash', hash.toString());
-    localStorage.setItem('hasMaster', 'true');
-    masterKey = pass;
-    unlocked = true;
-    showMsg('Master password set successfully');
-}
-
-// Load passwords from localStorage
-function loadPasswords() {
     let saved = localStorage.getItem('encryptedPasswords');
     passwords = saved ? JSON.parse(saved) : [];
     updateList();
-}
-
-// Setup all button click handlers
-function setupButtonHandlers() {
-    // Eye button for password visibility
+    
     eyeBtn.addEventListener('click', function() {
         if (password.type === 'password') {
             password.type = 'text';
-            eyeBtn.textContent = '🙈';
+            eyeBtn.textContent = '--';
         } else {
             password.type = 'password';
             eyeBtn.textContent = '👁';
         }
     });
     
-    // Password strength check
     password.addEventListener('input', function() {
         let p = this.value;
         let score = 0;
@@ -424,9 +453,15 @@ function setupButtonHandlers() {
         if (/[0-9]/.test(p)) score++;
         if (/[^A-Za-z0-9]/.test(p)) score++;
         
-        let color = 'red', text = 'Weak';
-        if (score > 3) { color = 'green'; text = 'Strong'; } 
-        else if (score > 1) { color = 'orange'; text = 'Medium'; }
+        let color = '#e74c3c';
+        let text = 'Weak';
+        if (score > 3) {
+            color = '#2ecc71';
+            text = 'Strong';
+        } else if (score > 1) {
+            color = '#f39c12';
+            text = 'Medium';
+        }
         
         strengthBar.style.width = (score * 20) + '%';
         strengthBar.style.backgroundColor = color;
@@ -434,35 +469,28 @@ function setupButtonHandlers() {
         strengthText.style.color = color;
     });
     
-    // Generate password button
     genBtn.addEventListener('click', function() {
         const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%';
         let pass = '';
-        pass += chars[Math.floor(Math.random() * 26)]; // lowercase
-        pass += chars[Math.floor(Math.random() * 26) + 26]; // uppercase
-        pass += chars[Math.floor(Math.random() * 10) + 52]; // number
-        pass += chars[Math.floor(Math.random() * 5) + 62]; // symbol
+        pass += chars[Math.floor(Math.random() * 26)];
+        pass += chars[Math.floor(Math.random() * 26) + 26];
+        pass += chars[Math.floor(Math.random() * 10) + 52];
+        pass += chars[Math.floor(Math.random() * 5) + 62];
         
         for (let i = 0; i < 8; i++) {
             pass += chars[Math.floor(Math.random() * chars.length)];
         }
         
-        // Shuffle the password
         pass = pass.split('').sort(() => Math.random() - 0.5).join('');
         password.value = pass;
-        
-        // Trigger strength check
         password.dispatchEvent(new Event('input'));
-        
-        // Show the generated password
         password.type = 'text';
-        eyeBtn.textContent = '🙈';
+        eyeBtn.textContent = '--';
     });
     
-    // Save button
     saveBtn.addEventListener('click', function() {
         if (!unlocked) {
-            showMsg('Please unlock first', 'error');
+            showMsg('Please unlock the vault first', 'error');
             masterPrompt.style.display = 'flex';
             return;
         }
@@ -477,10 +505,8 @@ function setupButtonHandlers() {
             return;
         }
         
-        // Encrypt the password
         let encrypted = encrypt(pass, masterKey);
         
-        // Add to passwords array
         passwords.push({
             id: Date.now(),
             website: web,
@@ -489,13 +515,9 @@ function setupButtonHandlers() {
             category: cat
         });
         
-        // Save to localStorage
         localStorage.setItem('encryptedPasswords', JSON.stringify(passwords));
-        
-        // Update UI
         updateList();
         
-        // Clear form
         website.value = '';
         username.value = '';
         password.value = '';
@@ -503,12 +525,12 @@ function setupButtonHandlers() {
         eyeBtn.textContent = '👁';
         strengthBar.style.width = '0';
         strengthText.textContent = 'Strength: None';
+        strengthText.style.color = '';
         
-        showMsg('Password saved successfully!');
+        showMsg('Password saved successfully');
     });
-}
+});
 
-// Simple encryption
 function encrypt(text, key) {
     let result = '';
     for (let i = 0; i < text.length; i++) {
@@ -517,7 +539,6 @@ function encrypt(text, key) {
     return btoa(result);
 }
 
-// Simple decryption
 function decrypt(encrypted, key) {
     try {
         let decoded = atob(encrypted);
@@ -526,15 +547,14 @@ function decrypt(encrypted, key) {
             result += String.fromCharCode(decoded.charCodeAt(i) ^ key.charCodeAt(i % key.length));
         }
         return result;
-    } catch(e) { 
-        return null; 
+    } catch(e) {
+        return null;
     }
 }
 
-// Update password list display
 function updateList() {
     if (!unlocked) {
-        passList.innerHTML = '<div class="empty">🔒 Locked - enter master password</div>';
+        passList.innerHTML = '<div class="empty"> Vault is locked - enter master password</div>';
         count.textContent = '?';
         return;
     }
@@ -556,7 +576,7 @@ function updateList() {
             </div>
             <div class="item-user">${escapeHtml(p.username)}</div>
             <div class="item-pass">
-                <span class="pass-dots" id="pass-${p.id}">🔒 Encrypted</span>
+                <span class="pass-dots" id="pass-${p.id}"> Encrypted</span>
                 <button class="act-btn show-btn" onclick="showPassword(${p.id})" type="button">Show</button>
             </div>
             <div class="item-actions">
@@ -568,10 +588,9 @@ function updateList() {
     passList.innerHTML = html;
 }
 
-// Show/hide password
 function showPassword(id) {
     if (!unlocked) {
-        showMsg('Please unlock first', 'error');
+        showMsg('Please unlock the vault first', 'error');
         return;
     }
     
@@ -581,28 +600,26 @@ function showPassword(id) {
     let elem = document.getElementById('pass-' + id);
     let btn = elem.nextElementSibling;
     
-    if (elem.textContent === '🔒 Encrypted') {
+    if (elem.textContent === ' Encrypted') {
         let decrypted = decrypt(p.password, masterKey);
         elem.textContent = decrypted || '[error]';
         btn.textContent = 'Hide';
         
-        // Auto hide after 5 seconds
         setTimeout(() => {
-            if (elem.textContent !== '🔒 Encrypted') {
-                elem.textContent = '🔒 Encrypted';
+            if (elem.textContent !== ' Encrypted') {
+                elem.textContent = ' Encrypted';
                 btn.textContent = 'Show';
             }
         }, 5000);
     } else {
-        elem.textContent = '🔒 Encrypted';
+        elem.textContent = ' Encrypted';
         btn.textContent = 'Show';
     }
 }
 
-// Copy password to clipboard
 function copyPassword(id) {
     if (!unlocked) {
-        showMsg('Please unlock first', 'error');
+        showMsg('Please unlock the vault first', 'error');
         return;
     }
     
@@ -613,11 +630,10 @@ function copyPassword(id) {
     if (!decrypted) return;
     
     navigator.clipboard.writeText(decrypted).then(() => {
-        showMsg('Password copied to clipboard!');
+        showMsg('Password copied to clipboard');
     });
 }
 
-// Delete password
 function deletePassword(id) {
     if (!unlocked) return;
     
@@ -629,12 +645,10 @@ function deletePassword(id) {
     }
 }
 
-// Check master password
 function checkMaster() {
     let entered = masterInput.value;
     let savedHash = localStorage.getItem('masterHash');
     
-    // Calculate hash of entered password
     let hash = 0;
     for (let i = 0; i < entered.length; i++) {
         hash = ((hash << 5) - hash) + entered.charCodeAt(i);
@@ -646,26 +660,23 @@ function checkMaster() {
         masterPrompt.style.display = 'none';
         masterInput.value = '';
         updateList();
-        showMsg('Vault unlocked!');
+        showMsg('Vault unlocked successfully');
     } else {
-        showMsg('Wrong password', 'error');
+        showMsg('Incorrect password', 'error');
         masterInput.select();
     }
 }
 
-// Show forgot password screen
 function showForgot() {
     masterPrompt.style.display = 'none';
     forgotScreen.style.display = 'flex';
 }
 
-// Close forgot password screen
 function closeForgot() {
     forgotScreen.style.display = 'none';
     masterPrompt.style.display = 'flex';
 }
 
-// Reset master password
 function resetMaster() {
     let newPass = newMasterForgot.value;
     let confirmPass = confirmMasterForgot.value;
@@ -679,10 +690,8 @@ function resetMaster() {
         return;
     }
     
-    // Delete all passwords
     localStorage.removeItem('encryptedPasswords');
     
-    // Set new master hash
     let hash = 0;
     for (let i = 0; i < newPass.length; i++) {
         hash = ((hash << 5) - hash) + newPass.charCodeAt(i);
@@ -702,17 +711,15 @@ function resetMaster() {
     showMsg('Master password reset. All passwords deleted.', 'error');
 }
 
-// Show message
 function showMsg(text, type) {
     msg.textContent = text;
     msg.className = 'msg' + (type === 'error' ? ' error' : '');
     msg.style.display = 'block';
     setTimeout(() => {
         msg.style.display = 'none';
-    }, 2000);
+    }, 2500);
 }
 
-// Escape HTML to prevent XSS
 function escapeHtml(text) {
     let div = document.createElement('div');
     div.textContent = text;
